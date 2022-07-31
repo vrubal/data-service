@@ -1,0 +1,43 @@
+type Query{
+    counterpartyById (id: ID!): Counterparty!
+    searchCounterParties(
+        filter:CounterPartyFilter,
+        aggregation:[CounterPartyAggregation]
+    ):[Counterparty]
+}
+
+input CounterPartyAggregation {
+    fieldName:String!
+    aggregationType:String!
+}
+type Counterparty{
+    id: ID!
+    name: String!
+    exposure (filter:ExposureFilter): [Exposure]
+}
+
+input ExposureFilter {
+    name: StringExpression
+    and:[ExposureFilter!]
+    or:ExposureFilter
+    not:[ExposureFilter!]
+}
+
+type Exposure{
+    id: ID
+    type: String
+    amount: Float
+}
+input CounterPartyFilter {
+    firstName: StringExpression
+    lastName: StringExpression
+    age: StringExpression
+    and: [CounterPartyFilter!]
+    or: [CounterPartyFilter!]
+    not: CounterPartyFilter
+}
+input StringExpression {
+    equals: String
+    contains: String
+    in: [String!]
+}
